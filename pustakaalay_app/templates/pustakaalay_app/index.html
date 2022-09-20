@@ -1,0 +1,40 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'pustakaalay_app/styles.css' %}">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pustakaalay</title>
+</head>
+<body>
+    <h1>Welcome to Pustakaalay</h1>
+    <div class='error'>
+        {% if error %}
+            <h2>{{ error }}</h2>
+        {% endif %}
+    </div>
+    <div id='login'>
+        <h2></h2>
+        <pre>Login to Continue, not already a member? sign up now!</pre>
+        <form method="post" url="{% url 'index'%}">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <th>Username</th>
+                    <td>{{ login_form.username }}</td>
+                </tr>
+                <tr>
+                    <th>Password</th>
+                    <td>{{ login_form.password }}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <input type="submit" value="Login">
+                    </th>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

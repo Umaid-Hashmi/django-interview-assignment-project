@@ -1,0 +1,37 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'pustakaalay_app/styles.css' %}?1">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pustakaalay</title>
+</head>
+<body>
+    <h1>Good Morning {{ user.username }}</h1>
+    <table>
+        <tr>
+            <th>Book</th>
+            <th>Status</th>
+            <th>Borrowed By</th>
+            <th>Delete</th>
+            <th>Save</th>
+        </tr>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                {% if book.borrower %}
+                    <td>BORROWED</td>
+                    <td>{{ book.borrower.username }}</td>
+                {% else %}
+                    <td>AVAILABLE</td>
+                    <td></td>
+                {% endif %}
+                <td>DELETE</td>
+                <td>SAVE</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

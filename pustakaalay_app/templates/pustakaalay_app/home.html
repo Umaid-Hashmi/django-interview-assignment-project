@@ -1,0 +1,34 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'pustakaalay_app/styles.css' %}">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pustakaalay</title>
+</head>
+<body>
+    <h1>Good Morning {{ username }}</h1>
+    <ul>
+        <li><a href="{% url 'delete_account'%}">Delete My Account</a></li>
+        <li><a href="{% url 'logout'%}">Logout</a></li>
+        <li>
+            Books Borrowed :
+            <ul>
+                {% for book in books %}
+                    <li>{{ book.title }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>
+            Books Available :
+            <ul>
+                {% for book in books %}
+                    <li>{{ book.title }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+
+</body>
+</html>
