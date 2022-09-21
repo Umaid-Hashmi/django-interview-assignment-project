@@ -1,8 +1,9 @@
+from urllib import request
 from django.http import HttpResponse, JsonResponse
 from django.http import JsonResponse
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
-
+from .custom_adapter import MyOwnAdapter 
 
 from .models import User
 from .models import Book
@@ -23,25 +24,53 @@ class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+def try_request():
+    try:
+            user_objs = User.objects.all()
+            serializer = UserSerializer(user_objs, many=True)
+            if serializer.data["is_librarian"] == True:
+                return Response({'status': 200, 'payload': serializer.data})
+    except Exception as e:
+            return Response({"status": 403, "message" : "Access Forbidden"})
+
 
 
 class UserDetailAPI(APIView):
     authentication_classes = [ JWTAuthentication ]
     permission_classes = [IsAuthenticated]
+    MyOwnAdapter.json_response(request=request)
 
     def get(self, request):
-            user_objs = User.objects.all()
-            serializer = UserSerializer(user_objs, many=True)
-            return Response({'status': 200, 'payload': serializer.data})
+        try_request()
 
-class BookList(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    def delete(self, request):
+        try_request()
+    
+    def post(self, request):
+       try_request()
+    
+    def put(self, request):
+        try_request()
 
 
-class BookDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+
+
+class BookDetailAPI(APIView):
+    authentication_classes = [ JWTAuthentication ]
+    permission_classes = [IsAuthenticated]
+    MyOwnAdapter.json_response(request=request)
+
+    def get(self, request):
+        try_request()
+        
+    def delete(self, request):
+        try_request()
+    
+    def post(self, request):
+       try_request()
+    
+    def put(self, request):
+        try_request()
 
 
 def index(request):
@@ -103,3 +132,9 @@ def book_manager(request):
     template = loader.get_template('pustakaalay_app/book_manager.html')
     response = HttpResponse(template.render(context, request))
     return response
+
+
+
+class BookList(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
